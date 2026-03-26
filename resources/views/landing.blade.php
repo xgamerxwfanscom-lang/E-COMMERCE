@@ -111,6 +111,36 @@
                 </div>
             </div>
 
+            <!-- Reseñas Section -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-8">
+                <div class="p-6 text-gray-900">
+                    <h2 class="text-2xl font-bold mb-4">Reseñas del servicio</h2>
+                    <div class="space-y-4">
+                        <article class="border border-gray-200 rounded-lg p-5">
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="font-semibold">María González</p>
+                                <p class="text-yellow-500">★★★★★</p>
+                            </div>
+                            <p class="text-gray-700">"Excelente atención, entrega puntual y producto tal como se describe. Repetiré compra sin duda."</p>
+                        </article>
+                        <article class="border border-gray-200 rounded-lg p-5">
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="font-semibold">Carlos Ramírez</p>
+                                <p class="text-yellow-500">★★★★☆</p>
+                            </div>
+                            <p class="text-gray-700">"Muy buen servicio al cliente y soporte rápido. Mejoraría la opción de seguimiento de pedido en la app."</p>
+                        </article>
+                        <article class="border border-gray-200 rounded-lg p-5">
+                            <div class="flex items-center justify-between mb-2">
+                                <p class="font-semibold">Ingrid Salas</p>
+                                <p class="text-yellow-500">★★★★☆</p>
+                            </div>
+                            <p class="text-gray-700">"Buena experiencia general, solo tuve una demora menor con el envío, pero el producto llegó en perfectas condiciones."</p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
             <!-- Explorar Tienda Section -->
             @auth
                 <div class="bg-indigo-50 overflow-hidden shadow-sm sm:rounded-lg text-center p-6">
