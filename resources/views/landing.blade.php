@@ -10,10 +10,12 @@
                     </p>
                     @guest
                         <div class="space-x-4">
-                            <a href="{{ route('login') }}" class="inline-block bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700">
+                            <a href="{{ route('login') }}"
+                                class="inline-block bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700">
                                 Iniciar sesión
                             </a>
-                            <a href="{{ route('register') }}" class="inline-block bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700">
+                            <a href="{{ route('register') }}"
+                                class="inline-block bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700">
                                 Registrarse
                             </a>
                         </div>
@@ -26,12 +28,40 @@
                 <div class="p-6 text-gray-900">
                     <h2 class="text-2xl font-bold mb-4">¿Quiénes Somos?</h2>
                     <p class="text-gray-600 mb-4">
-                        Somos una empresa dedicada a ofrecer productos de excelente calidad a través de nuestra plataforma de comercio electrónico. 
-                        Con más de 10 años de experiencia en el mercado, nos hemos ganado la confianza de miles de clientes satisfechos.
+                        Somos una empresa dedicada a ofrecer productos de excelente calidad a través de nuestra
+                        plataforma de comercio electrónico.
+                        Con más de 10 años de experiencia en el mercado, nos hemos ganado la confianza de miles de
+                        clientes satisfechos.
                     </p>
                     <p class="text-gray-600">
-                        Nuestro compromiso es brindar los mejores servicios, productos variados y atención al cliente de primera clase.
+                        Nuestro compromiso es brindar los mejores servicios, productos variados y atención al cliente de
+                        primera clase.
                     </p>
+                </div>
+            </div>
+
+            <!-- Misión y Visión Section -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-8">
+                <div class="p-6 text-gray-900">
+                    <h2 class="text-2xl font-bold mb-6">Misión y Visión</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-5">
+                            <h3 class="text-xl font-semibold mb-3 text-indigo-700">Misión</h3>
+                            <p class="text-gray-600">
+                                Ofrecer una experiencia de compra en línea simple, segura y confiable, brindando
+                                productos de calidad
+                                y un servicio al cliente cercano que supere las expectativas de nuestros usuarios.
+                            </p>
+                        </div>
+                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-5">
+                            <h3 class="text-xl font-semibold mb-3 text-indigo-700">Visión</h3>
+                            <p class="text-gray-600">
+                                Ser la tienda en línea referente en la región por nuestra innovación, variedad de
+                                productos y compromiso
+                                con la satisfacción de cada cliente en cada etapa de su compra.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -85,7 +115,8 @@
             @auth
                 <div class="bg-indigo-50 overflow-hidden shadow-sm sm:rounded-lg text-center p-6">
                     <h2 class="text-2xl font-bold mb-4">Explora Nuestra Tienda</h2>
-                    <a href="{{ route('home') }}" class="inline-block bg-indigo-600 text-white px-8 py-3 rounded hover:bg-indigo-700">
+                    <a href="{{ route('home') }}"
+                        class="inline-block bg-indigo-600 text-white px-8 py-3 rounded hover:bg-indigo-700">
                         Ver Productos
                     </a>
                 </div>
