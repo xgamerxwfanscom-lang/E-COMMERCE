@@ -1,51 +1,48 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title')</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                    <br>
-                    @if (isset($role))
-                        <strong>Rol:</strong> {{ $role }}
-                    @else
-                        <strong>Rol:</strong> {{ Auth::user()->role ?? 'No definido' }}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">Mi Sistema Laravel</a>
+
+            @auth
+                <div class="d-flex gap-2 flex-wrap">
+                    <a class="btn btn-outline-light btn-sm" href="{{ route('dashboard') }}">Dashboard</a>
+                    <a class="btn btn-outline-light btn-sm" href="{{ route('productos.index') }}">Productos</a>
+
+                    @if (in_array(auth()->user()->rol, ['administrador', 'gerente']))
+                        <a class="btn btn-outline-light btn-sm" href="{{ route('categorias.index') }}">Categorías</a>
+                        <a class="btn btn-outline-light btn-sm" href="{{ route('ventas.index') }}">Ventas</a>
                     @endif
+
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-danger btn-sm">Cerrar sesión</button>
+                    </form>
                 </div>
+            @endauth
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        @auth
+            <div class="alert alert-secondary shadow-sm">
+                <strong>Usuario:</strong> {{ auth()->user()->nombre }} {{ auth()->user()->apellidos }}
+                <br>
+                <strong>Rol:</strong> {{ ucfirst(auth()->user()->rol) }}
             </div>
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-6">
-                <div class="p-6 text-gray-900">
-                    <h3 class="text-xl font-semibold mb-4">Reseñas del servicio</h3>
+        @endauth
 
-                    <article class="mb-4 border border-gray-200 rounded-lg p-4">
-                        <div class="flex items-center justify-between mb-2">
-                            <p class="font-bold">María González</p>
-                            <p class="text-yellow-500">★★★★★</p>
-                        </div>
-                        <p class="text-gray-700">"Excelente atención, entrega puntual y producto tal como se describe. Repetiré compra sin duda."</p>
-                    </article>
-
-                    <article class="mb-4 border border-gray-200 rounded-lg p-4">
-                        <div class="flex items-center justify-between mb-2">
-                            <p class="font-bold">Carlos Ramírez</p>
-                            <p class="text-yellow-500">★★★★☆</p>
-                        </div>
-                        <p class="text-gray-700">"Muy buen servicio al cliente y soporte rápido. Mejoraría la opción de seguimiento de pedido en la app."</p>
-                    </article>
-
-                    <article class="border border-gray-200 rounded-lg p-4">
-                        <div class="flex items-center justify-between mb-2">
-                            <p class="font-bold">Ingrid Salas</p>
-                            <p class="text-yellow-500">★★★★☆</p>
-                        </div>
-                        <p class="text-gray-700">"Buena experiencia general, solo tuve una demora menor con el envío, pero el producto llegó en perfectas condiciones."</p>
-                    </article>
-                </div>
-            </div>        </div>
+        @yield('content')
     </div>
-</x-app-layout>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

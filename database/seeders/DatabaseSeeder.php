@@ -2,37 +2,43 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Usuario;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'role' => 'admin',
+        Usuario::create([
+            'nombre' => 'Luis',
+            'apellidos' => 'Perez',
+            'correo' => 'luis@tuxtla.tecnm.mx',
+            'clave' => Hash::make('123'),
+            'rol' => 'administrador',
         ]);
 
-        User::factory()->create([
-            'name' => 'Empleado User',
-            'email' => 'employee@example.com',
-            'role' => 'employee',
+        Usuario::create([
+            'nombre' => 'Maria',
+            'apellidos' => 'Lopez',
+            'correo' => 'maria@tuxtla.tecnm.mx',
+            'clave' => Hash::make('123'),
+            'rol' => 'cliente',
         ]);
 
-        User::factory()->create([
-            'name' => 'Cliente User',
-            'email' => 'client@example.com',
-            'role' => 'customer',
+        Usuario::create([
+            'nombre' => 'Mario',
+            'apellidos' => 'Sanchez',
+            'correo' => 'msanchez@tuxtla.tecnm.mx',
+            'clave' => Hash::make('123'),
+            'rol' => 'gerente',
         ]);
 
-        $this->call(ProductSeeder::class);
+        Usuario::factory()->count(2)->create();
+
+        $this->call([
+            CategoriaSeeder::class,
+            ProductoSeeder::class,
+        ]);
     }
 }

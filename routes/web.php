@@ -1,39 +1,39 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ShopController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\VentaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    if (Auth::check()) {
-        return app(ShopController::class)->index();
-    }
-    return view('landing');
-})->name('home');
-Route::get('/product/{product}', [ShopController::class, 'show'])->name('product.show');
-Route::post('/cart/add/{product}', [ShopController::class, 'addToCart'])->name('cart.add');
-Route::get('/cart', [ShopController::class, 'cart'])->name('cart');
-Route::post('/cart/remove/{product}', [ShopController::class, 'removeFromCart'])->name('cart.remove');
-
-Route::get('/dashboard', function () {
-    $user = Auth::user();
-
-    if ($user->isAdmin()) {
-        return view('dashboard', ['role' => 'Gerente']);
-    }
-
-    if ($user->isEmployee()) {
-        return view('dashboard', ['role' => 'Empleado']);
-    }
-
-    return view('dashboard', ['role' => 'Cliente']);
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    return redirect()->route('login');
 });
 
-require __DIR__.'/auth.php';
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'formulario'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+});
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
+    Route::get('/productos/create', [ProductoController::class, 'create'])->name('productos.create');
+    Route::post('/productos', [ProductoController::class, 'store'])->name('productos.store');
+    Route::get('/productos/{producto}/edit', [ProductoController::class, 'edit'])->name('productos.edit');
+    Route::put('/productos/{producto}', [ProductoController::class, 'update'])->name('productos.update');
+    Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+
+    Route::get('/ventas', [VentaController::class, 'index'])->name('ventas.index');
+    Route::get('/ventas/create', [VentaController::class, 'create'])->name('ventas.create');
+    Route::post('/ventas', [VentaController::class, 'store'])->name('ventas.store');
+
+    Route::get('/categorias', [CategoriaController::class, 'index'])->name('categorias.index');
+    Route::get('/categorias/create', [CategoriaController::class, 'create'])->name('categorias.create');
+    Route::post('/categorias', [CategoriaController::class, 'store'])->name('categorias.store');
+});
