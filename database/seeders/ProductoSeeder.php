@@ -11,38 +11,43 @@ class ProductoSeeder extends Seeder
 {
     public function run(): void
     {
-        $vendedor = Usuario::where('rol', 'gerente')->first();
+        $vendedores = Usuario::where('rol', 'gerente')->get();
+        $categoriasIds = Categoria::pluck('id');
 
-        if (!$vendedor) {
+        if ($vendedores->isEmpty() || $categoriasIds->isEmpty()) {
             return;
         }
 
-        $producto1 = Producto::create([
-            'nombre' => 'Laptop HP',
-            'descripcion' => 'Laptop para trabajo de oficina',
-            'precio' => 14500,
-            'existencia' => 6,
-            'usuario_id' => $vendedor->id,
-        ]);
+        $nombresBase = [
+            'Laptop',
+            'Mouse',
+            'Teclado',
+            'Monitor',
+            'Bocina',
+            'Silla',
+            'Escritorio',
+            'Lampara',
+            'Audifonos',
+            'Webcam',
+        ];
 
-        $producto2 = Producto::create([
-            'nombre' => 'Mouse inalámbrico',
-            'descripcion' => 'Mouse ergonómico para computadora',
-            'precio' => 350,
-            'existencia' => 20,
-            'usuario_id' => $vendedor->id,
-        ]);
+        foreach ($vendedores as $vendedor) {
+            $cantidadProductos = fake()->numberBetween(3, 6);
 
-        $categoria1 = Categoria::where('nombre', 'Computadoras')->first();
-        $categoria2 = Categoria::where('nombre', 'Oficina')->first();
+            for ($i = 1; $i <= $cantidadProductos; $i++) {
+                $nombreBase = fake()->randomElement($nombresBase);
 
-        if ($categoria1) {
-            $producto1->categorias()->attach($categoria1->id);
-            $producto2->categorias()->attach($categoria1->id);
-        }
+                $producto = Producto::create([
+                    'nombre' => $nombreBase . ' ' . fake()->bothify('##??'),
+                    'descripcion' => fake()->sentence(12),
+                    'precio' => fake()->randomFloat(2, 150, 30000),
+                    'existencia' => fake()->numberBetween(1, 60),
+                    'usuario_id' => $vendedor->id,
+                ]);
 
-        if ($categoria2) {
-            $producto2->categorias()->attach($categoria2->id);
+                $totalCategorias = fake()->numberBetween(1, min(3, $categoriasIds->count()));
+                $producto->categorias()->attach($categoriasIds->random($totalCategorias)->all());
+            }
         }
     }
 }

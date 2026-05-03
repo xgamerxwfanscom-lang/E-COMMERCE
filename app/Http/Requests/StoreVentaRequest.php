@@ -17,6 +17,7 @@ class StoreVentaRequest extends FormRequest
             'producto_id' => 'required|exists:productos,id',
             'cliente_id' => 'required|exists:usuarios,id',
             'total' => 'required|numeric|min:1',
+            'ticket' => 'required|image|max:4096',
         ];
     }
 
@@ -30,6 +31,9 @@ class StoreVentaRequest extends FormRequest
             'total.required' => 'El total es obligatorio.',
             'total.numeric' => 'El total debe ser numérico.',
             'total.min' => 'El total debe ser mayor a 0.',
+            'ticket.required' => 'Debes subir la imagen del ticket.',
+            'ticket.image' => 'El ticket debe ser una imagen válida.',
+            'ticket.max' => 'El ticket debe pesar máximo 4 MB.',
         ];
     }
 }

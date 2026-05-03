@@ -1,48 +1,117 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title')</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+@extends('layouts.app')
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">Mi Sistema Laravel</a>
+@section('title', 'Dashboard')
 
-            @auth
-                <div class="d-flex gap-2 flex-wrap">
-                    <a class="btn btn-outline-light btn-sm" href="{{ route('dashboard') }}">Dashboard</a>
-                    <a class="btn btn-outline-light btn-sm" href="{{ route('productos.index') }}">Productos</a>
+@section('content')
+    @if (session('status'))
+        <div class="alert alert-success">{{ session('status') }}</div>
+    @endif
 
-                    @if (in_array(auth()->user()->rol, ['administrador', 'gerente']))
-                        <a class="btn btn-outline-light btn-sm" href="{{ route('categorias.index') }}">Categorías</a>
-                        <a class="btn btn-outline-light btn-sm" href="{{ route('ventas.index') }}">Ventas</a>
-                    @endif
-
-                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-danger btn-sm">Cerrar sesión</button>
-                    </form>
-                </div>
-            @endauth
-        </div>
-    </nav>
-
-    <div class="container py-4">
-        @auth
-            <div class="alert alert-secondary shadow-sm">
-                <strong>Usuario:</strong> {{ auth()->user()->nombre }} {{ auth()->user()->apellidos }}
-                <br>
-                <strong>Rol:</strong> {{ ucfirst(auth()->user()->rol) }}
-            </div>
-        @endauth
-
-        @yield('content')
+    <div class="mb-4">
+        <h2 class="mb-1">Dashboard general</h2>
+        <p class="text-muted mb-0">Consultas administrativas resueltas con relaciones Eloquent.</p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Usuarios</p>
+                    <h3 class="mb-0">{{ $totalUsuarios }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Vendedores</p>
+                    <h3 class="mb-0">{{ $totalVendedores }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Compradores</p>
+                    <h3 class="mb-0">{{ $totalCompradores }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h5 class="mb-3">Productos por categoría</h5>
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Total productos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($productosPorCategoria as $categoria)
+                            <tr>
+                                <td>{{ $categoria->nombre }}</td>
+                                <td>{{ $categoria->productos->count() }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="2" class="text-center">Sin categorías registradas.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h5 class="mb-3">Producto más vendido</h5>
+            @if ($productoMasVendido && $productoMasVendido->ventas_count > 0)
+                <p class="mb-1"><strong>{{ $productoMasVendido->nombre }}</strong></p>
+                <p class="mb-0 text-muted">Ventas registradas: {{ $productoMasVendido->ventas_count }}</p>
+            @else
+                <p class="mb-0 text-muted">Aún no hay ventas registradas.</p>
+            @endif
+        </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h5 class="mb-3">Comprador más frecuente por categoría</h5>
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Comprador más frecuente</th>
+                            <th>Total compras</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($compradorFrecuentePorCategoria as $dato)
+                            <tr>
+                                <td>{{ $dato['categoria']->nombre }}</td>
+                                <td>
+                                    @if ($dato['comprador'])
+                                        {{ $dato['comprador']->nombre }} {{ $dato['comprador']->apellidos }}
+                                    @else
+                                        <span class="text-muted">Sin compras</span>
+                                    @endif
+                                </td>
+                                <td>{{ $dato['total'] }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center">Sin datos.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+@endsection

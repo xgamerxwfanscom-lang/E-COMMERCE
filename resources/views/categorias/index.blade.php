@@ -18,6 +18,7 @@
                             <th>Nombre</th>
                             <th>Descripción</th>
                             <th>Productos</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -33,10 +34,23 @@
                                         <span class="text-muted">Sin productos</span>
                                     @endforelse
                                 </td>
+                                <td class="d-flex gap-1">
+                                    @can('update', $categoria)
+                                        <a href="{{ route('categorias.edit', $categoria->id) }}"
+                                            class="btn btn-sm btn-warning">Editar</a>
+                                    @endcan
+                                    @can('delete', $categoria)
+                                        <form action="{{ route('categorias.destroy', $categoria->id) }}" method="POST"
+                                            onsubmit="return confirm('¿Eliminar categoría?')">
+                                            @csrf @method('DELETE')
+                                            <button class="btn btn-sm btn-danger">Eliminar</button>
+                                        </form>
+                                    @endcan
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center">No hay categorías registradas.</td>
+                                <td colspan="5" class="text-center">No hay categorías registradas.</td>
                             </tr>
                         @endforelse
                     </tbody>

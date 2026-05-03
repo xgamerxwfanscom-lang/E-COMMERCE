@@ -17,13 +17,28 @@ class UsuarioFactory extends Factory
 
         $nombre = fake()->randomElement($nombres);
         $apellido = fake()->randomElement($apellidos);
+        $correoBase = strtolower(substr($nombre, 0, 1) . $apellido);
 
         return [
             'nombre' => $nombre,
             'apellidos' => $apellido,
-            'correo' => strtolower(substr($nombre, 0, 1) . $apellido) . '@tuxtla.tecnm.mx',
+            'correo' => fake()->unique()->numerify($correoBase . '###') . '@tuxtla.tecnm.mx',
             'clave' => Hash::make('123'),
             'rol' => fake()->randomElement(['cliente', 'gerente']),
         ];
+    }
+
+    public function comprador(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'rol' => 'cliente',
+        ]);
+    }
+
+    public function vendedor(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'rol' => 'gerente',
+        ]);
     }
 }

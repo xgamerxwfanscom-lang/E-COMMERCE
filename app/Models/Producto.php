@@ -16,7 +16,12 @@ class Producto extends Model
         'descripcion',
         'precio',
         'existencia',
+        'fotos',
         'usuario_id',
+    ];
+
+    protected $casts = [
+        'fotos' => 'array',
     ];
 
     public function usuario()

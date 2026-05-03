@@ -17,6 +17,15 @@ class Venta extends Model
         'cliente_id',
         'fecha',
         'total',
+        'ticket',
+        'validada',
+        'validada_por',
+        'validada_en',
+    ];
+
+    protected $casts = [
+        'validada' => 'boolean',
+        'validada_en' => 'datetime',
     ];
 
     public function producto()
@@ -32,5 +41,10 @@ class Venta extends Model
     public function vendedor()
     {
         return $this->belongsTo(Usuario::class, 'vendedor_id');
+    }
+
+    public function validador()
+    {
+        return $this->belongsTo(Usuario::class, 'validada_por');
     }
 }

@@ -15,7 +15,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('productos.store') }}" method="POST">
+            <form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="mb-3">
@@ -39,10 +39,17 @@
                 </div>
 
                 <div class="mb-3">
+                    <label class="form-label">Fotos del producto</label>
+                    <input type="file" name="fotos[]" class="form-control" accept="image/*" multiple>
+                    <small class="text-muted">Puedes subir varias imágenes.</small>
+                </div>
+
+                <div class="mb-3">
                     <label class="form-label">Categorías</label>
                     @foreach ($categorias as $categoria)
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="categorias[]" value="{{ $categoria->id }}" id="categoria{{ $categoria->id }}">
+                            <input class="form-check-input" type="checkbox" name="categorias[]" value="{{ $categoria->id }}"
+                                id="categoria{{ $categoria->id }}">
                             <label class="form-check-label" for="categoria{{ $categoria->id }}">
                                 {{ $categoria->nombre }}
                             </label>

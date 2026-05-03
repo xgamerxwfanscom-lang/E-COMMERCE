@@ -19,6 +19,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
+                            <th>Fotos</th>
                             <th>Descripción</th>
                             <th>Precio</th>
                             <th>Existencia</th>
@@ -32,6 +33,18 @@
                             <tr>
                                 <td>{{ $producto->id }}</td>
                                 <td>{{ $producto->nombre }}</td>
+                                <td>
+                                    @if (!empty($producto->fotos))
+                                        <div class="d-flex gap-1 flex-wrap">
+                                            @foreach ($producto->fotos as $foto)
+                                                <img src="{{ asset('storage/' . $foto) }}" alt="Foto"
+                                                    style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;">
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <span class="text-muted">Sin fotos</span>
+                                    @endif
+                                </td>
                                 <td>{{ $producto->descripcion }}</td>
                                 <td>${{ number_format($producto->precio, 2) }}</td>
                                 <td>{{ $producto->existencia }}</td>
@@ -45,13 +58,15 @@
                                 </td>
                                 <td>
                                     @if (in_array(auth()->user()->rol, ['administrador', 'gerente']))
-                                        <a href="{{ route('productos.edit', $producto->id) }}" class="btn btn-warning btn-sm mb-1">
+                                        <a href="{{ route('productos.edit', $producto->id) }}"
+                                            class="btn btn-warning btn-sm mb-1">
                                             Editar
                                         </a>
                                     @endif
 
                                     @if (auth()->user()->rol === 'administrador')
-                                        <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('productos.destroy', $producto->id) }}" method="POST"
+                                            class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm"
@@ -64,7 +79,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center">No hay productos registrados.</td>
+                                <td colspan="9" class="text-center">No hay productos registrados.</td>
                             </tr>
                         @endforelse
                     </tbody>
